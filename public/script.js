@@ -1,66 +1,96 @@
-const apiUrl = 'http://localhost:3000/api';
+const apiUrl = "http://localhost:3000/api";
 
 // Read file
 async function readFile() {
-  const fileName = document.getElementById('readFileName').value;
+  const fileName = document.getElementById("readFileName").value;
+  if (!fileName.endsWith(".pdf")) {
+    document.getElementById("readContent").textContent =
+      "Only PDF files are allowed";
+    return;
+  }
   const response = await fetch(`${apiUrl}/read?fileName=${fileName}`);
   const data = await response.json();
-  document.getElementById('readContent').textContent = data.content || data.error;
+  if (data.content) {
+    document.getElementById("readContent").textContent = data.content; // Display extracted text from the PDF
+  } else {
+    document.getElementById("readContent").textContent = data.error;
+  }
 }
 
 // Write file
 async function writeFile() {
-  const fileName = document.getElementById('writeFileName').value;
-  const content = document.getElementById('writeContent').value;
+  const fileName = document.getElementById("writeFileName").value;
+  const content = document.getElementById("writeContent").value;
+
+  if (!fileName.endsWith(".pdf")) {
+    alert("Only PDF files are allowed");
+    return;
+  }
+
   await fetch(`${apiUrl}/write`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fileName, content })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fileName, content }),
   });
 }
 
 // Append file
 async function appendFile() {
-  const fileName = document.getElementById('appendFileName').value;
-  const content = document.getElementById('appendContent').value;
+  const fileName = document.getElementById("appendFileName").value;
+  const content = document.getElementById("appendContent").value;
+
+  if (!fileName.endsWith(".pdf")) {
+    alert("Only PDF files are allowed");
+    return;
+  }
+
   await fetch(`${apiUrl}/append`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fileName, content })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fileName, content }),
   });
 }
 
 // Delete file
 async function deleteFile() {
-  const fileName = document.getElementById('deleteFileName').value;
-  await fetch(`${apiUrl}/delete?fileName=${fileName}`, { method: 'DELETE' });
+  const fileName = document.getElementById("deleteFileName").value;
+  if (!fileName.endsWith(".pdf")) {
+    alert("Only PDF files are allowed");
+    return;
+  }
 
- 
+  await fetch(`${apiUrl}/delete?fileName=${fileName}`, { method: "DELETE" });
 }
 
 // Rename file
 async function renameFile() {
-  const oldName = document.getElementById('oldFileName').value;
-  const newName = document.getElementById('newFileName').value;
+  const oldName = document.getElementById("oldFileName").value;
+  const newName = document.getElementById("newFileName").value;
+
+  if (!oldName.endsWith(".pdf") || !newName.endsWith(".pdf")) {
+    alert("Only PDF files are allowed");
+    return;
+  }
+
   await fetch(`${apiUrl}/rename`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ oldName, newName })
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ oldName, newName }),
   });
 }
 
 // Create directory
 async function createDirectory() {
-  const dirName = document.getElementById('createDirName').value;
+  const dirName = document.getElementById("createDirName").value;
   await fetch(`${apiUrl}/create-dir`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ dirName })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ dirName }),
   });
 }
 
 // Delete directory
 async function deleteDirectory() {
-  const dirName = document.getElementById('deleteDirName').value;
-  await fetch(`${apiUrl}/delete-dir?dirName=${dirName}`, { method: 'DELETE' });
+  const dirName = document.getElementById("deleteDirName").value;
+  await fetch(`${apiUrl}/delete-dir?dirName=${dirName}`, { method: "DELETE" });
 }
