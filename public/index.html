@@ -28,15 +28,20 @@
 
     <section>
       <h2>Read PDF File</h2>
-      <input type="text" id="readFileName" placeholder="Enter PDF file name" />
+      <input type="text" id="readFileName" placeholder="Enter PDF File name" />
       <button onclick="readFile()">Read PDF File</button>
-      <pre id="readContent"></pre>
+      <iframe
+        id="pdfViewer"
+        width="100%"
+        height="500px"
+        style="border: 1px solid #ccc"
+      ></iframe>
     </section>
 
     <section>
       <h2>Write PDF File</h2>
       <input type="text" id="writeFileName" placeholder="Enter PDF File name" />
-      <textarea id="writeContent" placeholder="Enter content"></textarea>
+      <textarea id="writeContent" placeholder="Enter text content"></textarea>
       <button onclick="writeFile()">Write PDF File</button>
     </section>
 
